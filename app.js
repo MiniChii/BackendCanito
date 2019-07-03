@@ -53,6 +53,8 @@ var producto= require('./producto');
 app.get('/productos', producto.listar);
 app.post('/producto', producto.crear);
 app.put('/producto/:id', producto.actualizar);
+app.delete('/producto/:id', producto.borrar);
+app.get('/producto/:id',producto.ver);
 
 
 
