@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-07-2019 a las 15:37:02
+-- Tiempo de generación: 03-07-2019 a las 23:39:02
 -- Versión del servidor: 10.3.15-MariaDB
 -- Versión de PHP: 7.3.6
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `canito`
 --
+CREATE DATABASE IF NOT EXISTS `canito` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+USE `canito`;
 
 -- --------------------------------------------------------
 
@@ -63,6 +65,7 @@ CREATE TABLE `pedido` (
   `modo_entrega` enum('retiro local','despacho domicilio') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'retiro local',
   `fecha_inicio` date NOT NULL DEFAULT current_timestamp(),
   `fecha_entrega` date NOT NULL,
+  `fecha_pago` date NOT NULL,
   `valor_total` int(11) NOT NULL,
   `metodo_pago` enum('débito','crédito','efectivo') COLLATE utf8_spanish_ci NOT NULL,
   `direccion` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
@@ -82,15 +85,17 @@ CREATE TABLE `producto` (
   `descripcion` text COLLATE utf8_spanish_ci NOT NULL,
   `categoria` enum('empanada','torta','pan') COLLATE utf8_spanish_ci NOT NULL,
   `imagen` text COLLATE utf8_spanish_ci NOT NULL,
-  `cantidad_personas` int(11) DEFAULT NULL
+  `cantidad_personas` int(11) DEFAULT NULL,
+  `tiempo_produccion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `producto`
 --
 
-INSERT INTO `producto` (`id`, `nombre`, `precio`, `descripcion`, `categoria`, `imagen`, `cantidad_personas`) VALUES
-(1, 'Mi hojas', 15000, 'Torta de hoja, rellena con manjar y trozos de nueces', 'torta', 'imagen de tortita :3', 15);
+INSERT INTO `producto` (`id`, `nombre`, `precio`, `descripcion`, `categoria`, `imagen`, `cantidad_personas`, `tiempo_produccion`) VALUES
+(1, 'Mi hojas', 15000, 'Torta de hoja, rellena con manjar y trozos de nueces', 'torta', 'imagen de tortita :3', 20, 0),
+(2, 'Mi hojas', 15000, 'Torta de hoja, rellena con manjar y trozos de nueces', 'torta', 'imagen de tortita :3', 15, 0);
 
 --
 -- Índices para tablas volcadas
@@ -150,7 +155,7 @@ ALTER TABLE `pedido`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
