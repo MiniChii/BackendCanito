@@ -46,79 +46,13 @@ app.listen(3005,()=>{
     
 });
 
-//productos se ponen los más espécificos primero
 
-/**listar todos los productos */
-app.get('/productos', function(req,res){
-    mc.query('SELECT * FROM producto', function(error,  results, fields ){
-        if(error) throw error;
-        return res.send({error: false, data: results, message:'Lista de productos.'})
-    })
-})
+/**productos */
+var producto= require('./producto');
 
-/**Crear Producto */
-app.post('/producto', function(req,res){
-    let datosProducto = {
-        //id
-        nombre: req.body.nombre,
-        precio: parseInt(req.body.precio),
-        descripcion: req.body.descripcion,
-        categoria: req.body.categoria,
-        imagen: req.body.imagen,
-        cantidad_personas: parseInt(req.body.cantPersonas)
-    };
-
-    if(mc){
-        mc.query("INSERT INTO producto SET ?",datosProducto,function (error,result){
-            
-            if(error){
-                res.status(500).json({
-                    Mensaje:"Error",
-                    error: error
-            })
-            }
-            else{
-                res.status(201).json({
-                    mensaje:"Producto Insertado",
-                    datos: result
-                })
-            }
-        });
-    }
-
-
-});
-
-/*actualizar producto*/
-app.put('/producto/:id', function(req,res){
-    let id = req.params.id;
-    let producto = {
-        //id
-        nombre: req.body.nombre,
-        precio: parseInt(req.body.precio),
-        descripcion: req.body.descripcion,
-        categoria: req.body.categoria,
-        imagen: req.body.imagen,
-        cantidad_personas: parseInt(req.body.cantPersonas)
-    };
-
-    console.log(producto);
-    
-    if(!id || !producto){
-        return res.status(400).send({error: producto, message:'Debe proveer un id y los datos de un producto'});
-    }
-    mc.query("UPDATE producto SET ? WHERE Id = ?", [producto,id], function(error,results,fields){
-        if(error){ 
-            console.log(error);
-            throw error;
-        }
-        return res.status(200).json({
-            Mensaje:"Registro ha sido actualizado",
-            result: results,
-        })
-    })
-})
-
+app.get('/productos', producto.listar);
+app.post('/producto', producto.crear);
+app.put('/producto/:id', producto.actualizar);
 
 
 
