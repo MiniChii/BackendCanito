@@ -9,7 +9,7 @@ const mc = mysql.createConnection({
 //conectar
 mc.connect();
 
-/**listar todos los productos */
+/**listar todos los productos GET */
 exports.listar= function(req,res){
     mc.query('SELECT * FROM producto', function(error,  results, fields ){
         if(error) throw error;
@@ -51,7 +51,7 @@ exports.crear=function(req,res){
 
 };
 
-/*actualizar producto*/
+/*actualizar producto UPDATE*/
 exports.actualizar= function(req,res){
     let id = req.params.id;
     let producto = {
@@ -61,7 +61,8 @@ exports.actualizar= function(req,res){
         descripcion: req.body.descripcion,
         categoria: req.body.categoria,
         imagen: req.body.imagen,
-        cantidad_personas: parseInt(req.body.cantPersonas)
+        cantidad_personas: parseInt(req.body.cantidad_personas),
+        tiempo_produccion: parseInt(req.body.tiempo_produccion)
     };
 
     console.log(producto);
@@ -80,3 +81,86 @@ exports.actualizar= function(req,res){
         })
     })
 };
+
+/**borrar producto DELETE */
+exports.borrar= function(req,res){
+    let id = req.params.id;
+    if(mc){
+        mc.query("DELETE FROM producto WHERE id = ?",id,function(error,result){
+            if(error){
+                console.log(error);
+                
+                return res.status(500).json({"Mensaje" :"Error"});
+            }else{
+                return res.status(200).json({"Mensaje":"Registro con id = "+id+" Borrado"});
+            }
+        });
+    }
+};
+
+/**Ver Producto GET */
+exports.ver = function(req,res){
+    let id=req.params.id;
+    if(mc){
+        mc.query("SELECT * FROM producto where id = ?",id, function(error,result){
+            if(error){
+                console.log(error);
+                return res.status(500).json({
+                    Mensaje: "Error"
+                });
+            }else{
+                return res.status(200).json({
+                    Mensaje: "Ver producto",
+                    data: result
+
+                });
+            }
+        })
+    }
+} 
+
+/**listar por categoría */
+exports.listarCategoria = function(req,res){
+    let cat=req.params.cat;
+    if(mc){
+        mc.query("SELECT * FROM producto WHERE categoria = ?", cat, function(error,result){
+            if(error){
+                console.log(error);
+                return res.status(500).json({
+                    Mensaje: "Error"
+                });
+            }else{
+                return res.status(200).json({
+                    Mensaje: "Ver productos por categoría",
+                    data: result
+                })
+            }
+        })
+    }
+}
+
+/**buscar producto por nombre */
+exports.buscarPorNombre = function(req,res){
+    let nombre=req.query.n;
+    if(!nombre){
+        nombre="";
+    }
+    //producto/search?n=mil
+    if(mc){
+        mc.query("SELECT * FROM producto WHERE nombre LIKE ?",nombre+"%",function (error, result) {
+            if(error){
+                console.log(error);
+                return res.status(500).json({
+                    MEnsaje: "Error"
+                });    
+            }else{
+                return res.status(200).json({
+                    Mensaje:"Listado de productos que coinciden con '"+ nombre+"'",
+                    data:result
+                })
+            }
+        });
+    }
+    
+    
+}
