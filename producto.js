@@ -106,7 +106,7 @@ exports.ver = function(req,res){
             if(error){
                 console.log(error);
                 return res.status(500).json({
-                    Mensaje: "Error",
+                    Mensaje: "Error"
                 });
             }else{
                 return res.status(200).json({
@@ -119,3 +119,48 @@ exports.ver = function(req,res){
     }
 } 
 
+/**listar por categoría */
+exports.listarCategoria = function(req,res){
+    let cat=req.params.cat;
+    if(mc){
+        mc.query("SELECT * FROM producto WHERE categoria = ?", cat, function(error,result){
+            if(error){
+                console.log(error);
+                return res.status(500).json({
+                    Mensaje: "Error"
+                });
+            }else{
+                return res.status(200).json({
+                    Mensaje: "Ver productos por categoría",
+                    data: result
+                })
+            }
+        })
+    }
+}
+
+/**buscar producto por nombre */
+exports.buscarPorNombre = function(req,res){
+    let nombre=req.query.n;
+    if(!nombre){
+        nombre="";
+    }
+    //producto/search?n=mil
+    if(mc){
+        mc.query("SELECT * FROM producto WHERE nombre LIKE ?",nombre+"%",function (error, result) {
+            if(error){
+                console.log(error);
+                return res.status(500).json({
+                    MEnsaje: "Error"
+                });    
+            }else{
+                return res.status(200).json({
+                    Mensaje:"Listado de productos que coinciden con '"+ nombre+"'",
+                    data:result
+                })
+            }
+        });
+    }
+    
+    
+}
