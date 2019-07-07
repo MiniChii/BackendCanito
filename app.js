@@ -111,7 +111,7 @@ app.put('/producto/:id', producto.actualizar);
 app.delete('/producto/:id', producto.borrar);
 app.get('/productos', producto.listar);
 app.get('/producto/',producto.buscarPorNombre);
-app.get('/producto/cat=:cat',producto.listarCategoria);
+app.get('/producto/categoria/:cat',producto.listarCategoria);
 app.get('/producto/:id',producto.ver);
 
 
