@@ -119,7 +119,7 @@ app.listen(3005,()=>{
     
 });
 
-
+//hola
 /**productos */
 var producto= require('./producto');
 var cliente= require('./cliente');
