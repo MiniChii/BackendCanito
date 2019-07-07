@@ -145,7 +145,7 @@ app.listen(3005, () => {
   console.log('Express server - puerto 3005 online');
 });
 
-
+//hola
 /**productos */
 var producto = require('./producto');
 var cliente = require('./cliente');
