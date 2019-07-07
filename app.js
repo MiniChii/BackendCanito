@@ -41,7 +41,7 @@ mc.connect(function(err){
     if (err) {
         return console.error('error: ' + err.message);
       }
-        let drop = "DROP TABLE IF EXISTS producto";
+        let dropProducto = "DROP TABLE IF EXISTS producto";
         let createProducto = `create table if not exists producto(
                               id int(11) primary key auto_increment,
                               nombre varchar(70) NOT NULL,
@@ -52,7 +52,22 @@ mc.connect(function(err){
                               cantidad_personas int(11) not null,
                               tiempo_produccion int(11) NOT NULL                            
                           )`;    
-        mc.query(drop, function(err, results, fields) {
+
+
+        let dropPedido = "DROP TABLE IF EXISTS pedido";
+        let createPedido = `create table if not exists pedido(
+                              id int(11) primary key auto_increment,
+                              modo_entrega text NOT NULL,
+                              fecha_inicio date not null,
+                              fecha_entrega date  NOT NULL,
+                              fecha_pago date NOT NULL,
+                              valor_total int(11)  NOT NULL,
+                              metodo_pago text not null,
+                              direccion varchar(200) NOT NULL,
+                              estado varchar(150) NOT NULL                            
+                          )`;  
+                          
+        mc.query(dropProducto, function(err, results, fields) {
             if (err) {                
               console.log(err.message);
             }
@@ -63,7 +78,20 @@ mc.connect(function(err){
           console.log(err.message);
         }
         console.log('create producto realizado');
-      });          
+        });  
+
+        mc.query(dropPedido, function(err, results, fields) {
+            if (err) {                
+              console.log(err.message);
+            }
+            console.log('Drop pedido realizado');
+          });
+        mc.query(createPedido, function(err, results, fields) {
+        if (err) {
+          console.log(err.message);
+        }
+        console.log('create pedido realizado');
+        });         
 });
 
 
