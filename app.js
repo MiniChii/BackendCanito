@@ -36,8 +36,35 @@ const mc = mysql.createConnection({
     password:'',
     database: 'canito',
 });
-//conectar
-mc.connect();
+//crear tabla
+mc.connect(function(err){
+    if (err) {
+        return console.error('error: ' + err.message);
+      }
+        let drop = "DROP TABLE IF EXISTS producto";
+        let createProducto = `create table if not exists producto(
+                              id int(11) primary key auto_increment,
+                              nombre varchar(70) NOT NULL,
+                              precio int not null,
+                              descripcion text  NOT NULL,
+                              categoria text NOT NULL,
+                              imagen text  NOT NULL,
+                              cantidad_personas int(11) not null,
+                              tiempo_produccion int(11) NOT NULL                            
+                          )`;    
+        mc.query(drop, function(err, results, fields) {
+            if (err) {                
+              console.log(err.message);
+            }
+            console.log('Drop producto realizado');
+          });
+        mc.query(createProducto, function(err, results, fields) {
+        if (err) {
+          console.log(err.message);
+        }
+        console.log('create producto realizado');
+      });          
+});
 
 
 //Escuchar peticiones
