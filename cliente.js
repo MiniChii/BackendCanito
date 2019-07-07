@@ -9,7 +9,7 @@ const mc = mysql.createConnection({
 //conectar
 mc.connect();
 
-/**Crear cliente */
+/*Crear cliente */
 exports.crearCliente=function(req,res){
     let datosCliente = {  
         rut_cliente: req.body.rut_cliente,
@@ -36,7 +36,7 @@ exports.crearCliente=function(req,res){
     }
 };
 
-/*actualizar cliente UPDATE*/
+/*actualizar cliente */
 exports.actualizarCliente= function(req,res){
     let id = req.params.id;
     let cliente = {
@@ -62,3 +62,27 @@ exports.actualizarCliente= function(req,res){
         })
     })
 };
+
+/*borrar cliente  */
+exports.borrarCliente= function(req,res){
+    let id = req.params.id;
+    if(mc){
+        mc.query("DELETE FROM cliente WHERE id = ?",id,function(error,result){
+            if(error){
+                console.log(error);
+                
+                return res.status(500).json({"Mensaje" :"Error"});
+            }else{
+                return res.status(200).json({"Mensaje":"Registro con id = "+id+" Borrado"});
+            }
+        });
+    }
+};
+
+/**listar todo */
+exports.listarClientes= function(req,res){
+    mc.query('SELECT * FROM cliente', function(error,  results, fields ){
+        if(error) throw error;
+        return res.send({error: false, data: results, message:'Lista de clientes.'})
+    });
+}

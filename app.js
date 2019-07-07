@@ -133,9 +133,7 @@ app.get('/producto/',producto.buscarPorNombre);
 app.get('/producto/categoria/:cat',producto.listarCategoria);
 app.get('/producto/:id',producto.ver);
 
+app.get('/clientes', cliente.listarClientes);
 app.post('/cliente',cliente.crearCliente);
 app.put('/cliente/:id', cliente.actualizarCliente);
-
-
-
-
+app.delete('/cliente/:id', cliente.borrarCliente);
