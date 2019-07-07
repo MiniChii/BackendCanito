@@ -51,8 +51,14 @@ mc.connect(function(err){
                               imagen text  NOT NULL,
                               cantidad_personas int(11) not null,
                               tiempo_produccion int(11) NOT NULL                            
-                          )`;    
-
+                          )`;                                                      
+        let dropCliente = "DROP TABLE IF EXISTS cliente";
+        let createCliente = `create table if not exists cliente(
+                             id int(11) primary key auto_increment,
+                             rut_cliente varchar(12) NOT NULL,
+                             nombre varchar(255) NOT NULL,
+                             apellido varchar(255) NOT NULL
+                          )`;
 
         let dropPedido = "DROP TABLE IF EXISTS pedido";
         let createPedido = `create table if not exists pedido(
@@ -91,7 +97,19 @@ mc.connect(function(err){
           console.log(err.message);
         }
         console.log('create pedido realizado');
-        });         
+        });   
+        mc.query(dropCliente, function(err, results, fields) {
+          if (err) {                
+            console.log(err.message);
+          }
+          console.log('Drop cliente realizado');
+        });
+      mc.query(createCliente, function(err, results, fields) {
+      if (err) {
+        console.log(err.message);
+      }
+      console.log('create cliente realizado');
+      });        
 });
 
 
@@ -104,6 +122,7 @@ app.listen(3005,()=>{
 
 /**productos */
 var producto= require('./producto');
+var cliente= require('./cliente');
 
 
 app.post('/producto', producto.crear);
@@ -113,6 +132,9 @@ app.get('/productos', producto.listar);
 app.get('/producto/',producto.buscarPorNombre);
 app.get('/producto/categoria/:cat',producto.listarCategoria);
 app.get('/producto/:id',producto.ver);
+
+app.post('/cliente',cliente.crearCliente);
+app.put('/cliente/:id', cliente.actualizarCliente);
 
 
 
