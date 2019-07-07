@@ -41,39 +41,51 @@ mc.connect(function (err) {
   if (err) {
     return console.error('error: ' + err.message);
   }
+
+  let dropDetalle = "DROP TABLE IF EXISTS detalle_pedido";
+  let createDetalle = `create table if not exists detalle_pedido(
+                          id int(11) primary key auto_increment NOT NULL,
+                          id_producto int(11) NOT NULL,
+                          id_pedido int(11) NOT NULL,
+                          id_cliente int(11) NOT NULL,
+                          cantidad int(11) NOT NULL,
+                          FOREIGN KEY (id_producto) REFERENCES producto(id),
+                          FOREIGN KEY (id_pedido) REFERENCES pedido(id),
+                          FOREIGN KEY (id_cliente) REFERENCES cliente(id)                                                
+                          )ENGINE=InnoDB;`;
   let dropProducto = "DROP TABLE IF EXISTS producto";
   let createProducto = `create table if not exists producto(
-                                 id int(11) primary key auto_increment,
-                                 nombre varchar(70) NOT NULL,
-                                 precio int(11) NOT NULL,
-                                 descripcion text NOT NULL,
-                                 categoria enum('empanada','torta','pan') NOT NULL,
-                                 imagen text NOT NULL,
-                                 cantidad_personas int(11) DEFAULT NULL,
-                                 tiempo_produccion int(11) NOT NULL                           
+                           id int(11) primary key auto_increment,
+                           nombre varchar(70) NOT NULL,
+                           precio int(11) NOT NULL,
+                           descripcion text NOT NULL,
+                           categoria enum('empanada','torta','pan') NOT NULL,
+                           imagen text NOT NULL,
+                           cantidad_personas int(11) DEFAULT NULL,
+                           tiempo_produccion int(11) NOT NULL                           
                           )ENGINE=InnoDB;`;
   let dropCliente = "DROP TABLE IF EXISTS cliente";
   let createCliente = `create table if not exists cliente(
-          id int(11) primary key  auto_increment NOT NULL,
-          email varchar(100) NOT NULL,
-          contraseña varchar(300) NOT NULL,
-          rut varchar(12) NOT NULL,
-          nombres varchar(70) NOT NULL,
-          ap_paterno varchar(40) NOT NULL,
-          ap_materno varchar(40) NOT NULL
+                          id int(11) primary key  auto_increment NOT NULL,
+                          email varchar(100) NOT NULL,
+                          contraseña varchar(300) NOT NULL,
+                          rut varchar(12) NOT NULL,
+                          nombres varchar(70) NOT NULL,
+                          ap_paterno varchar(40) NOT NULL,
+                          ap_materno varchar(40) NOT NULL
                           )ENGINE=InnoDB;`;
 
   let dropPedido = "DROP TABLE IF EXISTS pedido";
   let createPedido = `create table if not exists pedido(
-          id int(11) primary key auto_increment NOT NULL,
-          modo_entrega enum('retiro local','despacho domicilio')  NOT NULL DEFAULT 'retiro local',
-          fecha_inicio date NOT NULL,
-          fecha_entrega date NOT NULL,
-          fecha_pago date NOT NULL,
-          valor_total int(11) NOT NULL,
-          metodo_pago enum('débito','crédito','efectivo') NOT NULL,
-          direccion varchar(200) NOT NULL,
-          estado enum('cancelado por cliente','procesando','aprobado','preparando','listo para entrega','entregado') NOT NULL                                    
+                          id int(11) primary key auto_increment NOT NULL,
+                          modo_entrega enum('retiro local','despacho domicilio')  NOT NULL DEFAULT 'retiro local',
+                          fecha_inicio date NOT NULL,
+                          fecha_entrega date NOT NULL,
+                          fecha_pago date NOT NULL,
+                          valor_total int(11) NOT NULL,
+                          metodo_pago enum('débito','crédito','efectivo') NOT NULL,
+                          direccion varchar(200) NOT NULL,
+                          estado enum('cancelado por cliente','procesando','aprobado','preparando','listo para entrega','entregado') NOT NULL                                    
                           )ENGINE=InnoDB;`;
 
   mc.query(dropProducto, function (err, results, fields) {
@@ -113,13 +125,24 @@ mc.connect(function (err) {
     }
     console.log('create cliente realizado');
   });
-});
 
+  mc.query(dropDetalle, function (err, results, fields) {
+    if (err) {
+      console.log(err.message);
+    }
+    console.log('Drop detalle realizado');
+  });
+  mc.query(createDetalle, function (err, results, fields) {
+    if (err) {
+      console.log(err.message);
+    }
+    console.log('create detalle realizado');
+  });
+});
 
 //Escuchar peticiones
 app.listen(3005, () => {
   console.log('Express server - puerto 3005 online');
-
 });
 
 
