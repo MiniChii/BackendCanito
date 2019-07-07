@@ -149,6 +149,7 @@ app.listen(3005, () => {
 /**productos */
 var producto = require('./producto');
 var cliente = require('./cliente');
+var pedido = require('./pedido');
 
 
 app.post('/producto', producto.crear);
@@ -163,3 +164,7 @@ app.get('/clientes', cliente.listarClientes);
 app.post('/cliente', cliente.crearCliente);
 app.put('/cliente/:id', cliente.actualizarCliente);
 app.delete('/cliente/:id', cliente.borrarCliente);
+
+app.post('/pedido', pedido.crearPedido);
+app.get('/pedidos', pedido.listarPedido);
+app.get('/pedidos/:estado', pedido.listarPedidoPorEstado);
