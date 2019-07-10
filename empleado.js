@@ -18,6 +18,7 @@ exports.crearEmpleado = function (req, res) {
        rol: req.body.rol
 
     };
+    console.log(password);
 
     if (mc) {
         console.log(datosEmpleado);
