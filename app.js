@@ -36,7 +36,7 @@ const mc = mysql.createConnection({
     password:'',
     database: 'canito',
 });
-//crear tabla
+
 mc.connect();
 
 
