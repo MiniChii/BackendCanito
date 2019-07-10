@@ -72,3 +72,79 @@ app.post('/opinion', op.crear);
 
 app.post('/empleado', empleado.crearEmpleado);
 
+
+app.post('/loginEmpleado', (req, res)=>{
+    var body = req.body;
+    mc.query("SELECT * FROM empleado WHERE user = ?", body.user, function(error, results, fields){
+        if(error){
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al buscar usuario',
+                errors: err
+            });
+        }
+        if(!results){
+            return res.status(400).json({
+                ok: false,
+                mensaje: 'Credenciales incorrectas',
+                errors: err
+            });
+        }
+            console.log(results); 
+            if(!bcrypt.compareSync(body.password, results[0].password)){
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: 'Credenciales incorrectas',
+                    errors: error
+                });
+            }
+            //crear un token 
+            let SEED= 'esta-es-una-semilla';
+            let token= jwt.sign({usuario: results[0].password},SEED,{expiresIn:14400});
+            res.status(200).json({
+                ok: true,
+                user: results,
+                id:results[0].userId,
+                token: token
+            });        
+    });
+});
+
+app.post('/loginCliente', (req, res)=>{
+    var body = req.body;
+    mc.query("SELECT * FROM cliente WHERE email = ?", body.email, function(error, results, fields){
+        if(error){
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al buscar usuario',
+                errors: err
+            });
+        }
+        if(!results){
+            return res.status(400).json({
+                ok: false,
+                mensaje: 'Credenciales incorrectas',
+                errors: err
+            });
+        }
+            console.log(results); 
+            if(!bcrypt.compareSync(body.contraseña, results[0].contraseña)){
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: 'Credenciales incorrectas',
+                    errors: error
+                });
+            }
+            //crear un token 
+            let SEED= 'esta-es-una-semilla';
+            let token= jwt.sign({usuario: results[0].contraseña},SEED,{expiresIn:14400});
+            res.status(200).json({
+                ok: true,
+                email: results,
+                id:results[0].id,
+                token: token
+            });        
+    });
+});
+
+

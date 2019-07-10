@@ -13,7 +13,7 @@ mc.connect();
 exports.crearCliente = function (req, res) {
     let datosCliente = {
         email: req.body.email,
-        contraseña: req.body.contraseña,
+        contraseña: bcrypt.hashSync(req.body.contraseña, 10),
         rut: req.body.rut,
         nombres: req.body.nombres,
         ap_paterno: req.body.ap_paterno,
