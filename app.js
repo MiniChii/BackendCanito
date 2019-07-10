@@ -51,6 +51,7 @@ app.listen(3005,()=>{
 var producto= require('./producto');
 var cliente= require('./cliente');
 var op= require('./opinion');
+var empleado = require('./empleado');
 
 
 app.post('/producto', producto.crear);
@@ -68,3 +69,6 @@ app.delete('/cliente/:id', cliente.borrarCliente);
 
 app.get('/opinion', op.listarOpinion);
 app.post('/opinion', op.crear);
+
+app.post('/empleado', empleado.crearEmpleado);
+

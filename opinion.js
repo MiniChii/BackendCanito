@@ -28,7 +28,7 @@ exports.listarOpinion = function (req, res) {
     }
 }
 
-/**Crear Producto */
+/**Crear Opinion */
 exports.crear = function (req, res) {
     let datosOpinion = {
         //id
