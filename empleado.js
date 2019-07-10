@@ -36,3 +36,40 @@ exports.crearEmpleado = function (req, res) {
         });
     }
 };
+app.post('/login', (req, res)=>{
+    var body = req.body;
+    mc.query("SELECT * FROM empleado WHERE email = ?", body.email, function(error, results, fields){
+        if(error){
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al buscar usuario',
+                errors: error
+            });
+        }
+        if(!results.length){
+            return res.status(400).json({
+                ok: false,
+                mensaje: 'Credenciales incorrectas - email',
+                errors: error
+            });
+        }
+            console.log(results); 
+            if(!bcrypt.compareSync(body.password, results[0].userPassword)){
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: 'Credenciales incorrectas - password',
+                    errors: error
+                });
+            }
+            // Crear un token!
+            let SEED ='esta-es-una-semilla';
+            let token = jwt.sign({ usuario: results[0].userPassword}, SEED, { expiresIn:14400});
+
+            res.status(200).json({
+                ok: true,
+                usuario: results,
+                id:results[0].userId,
+                token: token
+            });        
+    });
+});
