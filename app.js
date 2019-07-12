@@ -41,8 +41,8 @@ mc.connect();
 
 
 //Escuchar peticiones
-app.listen(3005,()=>{
-    console.log('Express server - puerto 3005 online');
+app.listen(81,()=>{
+    console.log('Express server - puerto 81 online');
     
 });
 
@@ -52,7 +52,6 @@ var producto= require('./producto');
 var cliente= require('./cliente');
 var op= require('./opinion');
 var empleado = require('./empleado');
-
 
 app.post('/producto', producto.crear);
 app.put('/producto/:id', producto.actualizar);
@@ -71,6 +70,17 @@ app.get('/opinion', op.listarOpinion);
 app.post('/opinion', op.crear);
 
 app.post('/empleado', empleado.crearEmpleado);
+
+
+app.get('/login',function(req,res){
+    console.log('entro a login');
+    mc.query('SELECT * FROM login', function(error, results, fields){
+        if(error) throw error;
+        return res.send({
+            error: false, data: results, message:'usuarios'
+        });
+    });
+});
 
 
 app.post('/loginEmpleado', (req, res)=>{
@@ -146,5 +156,3 @@ app.post('/loginCliente', (req, res)=>{
             });        
     });
 });
-
-

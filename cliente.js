@@ -87,7 +87,6 @@ exports.borrarCliente = function (req, res) {
     }
 };
 
-/**listar todo */
 exports.listarClientes = function (req, res) {
     mc.query('SELECT * FROM cliente', function (error, results, fields) {
         if (error) throw error;
