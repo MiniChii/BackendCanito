@@ -13,9 +13,9 @@ mc.connect();
 
 exports.crearEmpleado = function (req, res) {    
     let datosEmpleado = {
-       user: req.body.user+"",
+       user: req.body.user,
        password: bcrypt.hashSync(req.body.password, 10),
-       rol: req.body.rol+""
+       rol: req.body.rol
 
     };
     console.log(req.body.password);
