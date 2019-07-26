@@ -39,12 +39,6 @@ const mc = mysql.createConnection({
 
 mc.connect();
 
-
-//Escuchar peticiones
-app.listen(3005,()=>{
-    console.log('Express server - puerto 3005 online');
-    
-});
 //Escuchar peticiones
 app.listen(3005,()=>{
     console.log('Express server - puerto 3005 online');
