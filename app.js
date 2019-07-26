@@ -45,6 +45,11 @@ app.listen(81,()=>{
     console.log('Express server - puerto 81 online');
     
 });
+//Escuchar peticiones
+app.listen(3005,()=>{
+    console.log('Express server - puerto 3005 online');
+    
+});
 
 //hola
 /**productos */
