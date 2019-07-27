@@ -51,6 +51,8 @@ var producto= require('./producto');
 var cliente= require('./cliente');
 var op= require('./opinion');
 var empleado = require('./empleado');
+var pedido = require('./pedido');
+var detalle_pedido= require('./detalle_pedido')
 
 app.post('/producto', producto.crear);
 app.put('/producto/:id', producto.actualizar);
@@ -70,6 +72,11 @@ app.post('/opinion', op.crear);
 
 app.post('/empleado', empleado.crearEmpleado);
 
+app.post('/pedido',pedido.crear);
+app.get('/pedido/:id',pedido.ver);
+app.put('/pedido',pedido.actualizar);
+
+app.post('/detallepedido',detalle_pedido.crear);
 
 app.get('/login',function(req,res){
     console.log('entro a login');
