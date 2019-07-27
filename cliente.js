@@ -1,3 +1,4 @@
+var bcrypt = require('bcrypt');
 const mysql = require('mysql');
 //conf conexion
 const mc = mysql.createConnection({
@@ -11,17 +12,21 @@ mc.connect();
 
 /*Crear cliente */
 exports.crearCliente = function (req, res) {
+    console.log("al inicio------");
+    console.log(req.body);
     let datosCliente = {
-        email: req.body.email,
-        contraseña: bcrypt.hashSync(req.body.contraseña, 10),
-        rut: req.body.rut,
+
+        rut_cliente: req.body.rut_cliente,
         nombres: req.body.nombres,
         ap_paterno: req.body.ap_paterno,
         ap_materno: req.body.ap_materno,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 10),
 
     };
 
     if (mc) {
+        console.log("en la conexion----");
         console.log(datosCliente);
         mc.query("INSERT INTO cliente SET ?", datosCliente, function (error, result) {
 
@@ -36,6 +41,29 @@ exports.crearCliente = function (req, res) {
                     mensaje: "Cliente Insertado",
                     datos: result
                 })
+
+                /*para crear al usuario c: */
+                let datosUsuario = {
+                    user:datosCliente.email,
+                    password:datosCliente.password,
+                    rol:'Cliente'
+                }
+                mc.query("INSERT INTO login SET ?", datosUsuario, function (err,res) {
+                    if(err){
+                        res.status(500).json({
+                            mensaje: "Error usuario",
+                            error:err
+                        })
+                    }else{
+                        res.status(201).json({
+                            mensaje: "Usuario agregado",
+                            datos: result
+                        })
+                    }
+
+                    
+                }) 
+
             }
         });
     }
