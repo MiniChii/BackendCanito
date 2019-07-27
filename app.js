@@ -72,7 +72,7 @@ app.post('/opinion', op.crear);
 
 app.post('/empleado', empleado.crearEmpleado);
 
-app.post('/pedido',pedido.crear);
+app.post('/pedido',pedido.crearPedido);
 app.get('/pedido/:id',pedido.ver);
 app.put('/pedido',pedido.actualizar);
 app.get('/pedidos', pedido.listarPedido);
