@@ -4,11 +4,11 @@ const bcrypt = require('bcrypt');
 //conf conexion
 const mc = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'canito',
+    user: 'matias.chavez1501',
+    password:'shH29FeMc4hf',
+    database: 'matias.chavez1501',
 });
-//conectar
+
 mc.connect();
 
 exports.crearEmpleado = function (req, res) {    

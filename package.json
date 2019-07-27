@@ -4,7 +4,7 @@
   "description": "Backend para la aplicacion hey canito",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,10 +18,8 @@
   },
   "homepage": "https://github.com/MiniChii/BackendCanito#readme",
   "devDependencies": {
-    "nodemon": "^1.19.1"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",

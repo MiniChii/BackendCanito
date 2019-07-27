@@ -32,17 +32,17 @@ app.use(function(req,res,next){
 //conf conexion
 const mc = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password:'',
-    database: 'canito',
+    user: 'matias.chavez1501',
+    password:'shH29FeMc4hf',
+    database: 'matias.chavez1501',
 });
 
 mc.connect();
 
 
 //Escuchar peticiones
-app.listen(3005,()=>{
-    console.log('Express server - puerto 3005 online');
+app.listen(3004,()=>{
+    console.log('Express server - puerto 3004 online');
     
 });
 
@@ -72,15 +72,58 @@ app.post('/opinion', op.crear);
 app.post('/empleado', empleado.crearEmpleado);
 
 
-app.get('/login',function(req,res){
-    console.log('entro a login');
-    mc.query('SELECT * FROM login', function(error, results, fields){
+app.get('/Userlogin',(req, res)=>{
+    var body = req.body;
+    console.log(req.body.email);
+    console.log(req.body.password);
+    mc.query("SELECT rol FROM login WHERE user LIKE ?",req.body.email+"%", function(error, results, fields){
         if(error) throw error;
         return res.send({
             error: false, data: results, message:'usuarios'
         });
     });
 });
+app.post('/login', (req, res)=>{
+    var body = req.body;
+    console.log(req.body.email);
+    console.log(req.body.password);
+    mc.query("SELECT * FROM login WHERE user LIKE ?",req.body.email+"%", function(error, results, fields){
+        
+        if(error){
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error al buscar usuario',
+                errors: error
+            });
+        }
+        if(results.length==0){
+            console.log(results);
+            return res.status(400).json({
+                ok: false,
+                mensaje: 'Credenciales incorrectas',
+                errors: error
+            });
+        }
+            console.log(results); 
+            if(body.password != results[0].password){
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: 'Credenciales incorrectas',
+                    errors: error
+                });
+            }
+            //crear un token 
+            let SEED= 'esta-es-una-semilla';
+            let token= jwt.sign({usuario: results[0].password},SEED,{expiresIn:14400});
+            res.status(200).json({
+                ok: true,
+                user: results,
+                id:results[0].userId,
+                token: token
+            });        
+    });
+});
+
 
 
 app.post('/loginEmpleado', (req, res)=>{
