@@ -61,6 +61,7 @@ exports.crear = function(req,res){
         });
     }
 };
+
 /**Ver pedido según el id */
 exports.ver = function(req,res){
     let id=req.params.id;
@@ -73,6 +74,7 @@ exports.ver = function(req,res){
                 });
             }else{
                 return res.status(200).json({
+
                     Mensaje: "Ver Pedido",
                     data: results
                 });
@@ -116,3 +118,29 @@ exports.actualizar= function(req,res){
         })
     })
 };
+
+/**listar todos los pedidos */
+exports.listarPedido= function(req,res){
+    mc.query('SELECT * FROM pedido', function(error,  results, fields ){
+        if(error) throw error;
+        return res.send({error: false, data: results, message:'Lista de pedido.'})
+    })
+}
+
+/**listar todos los pedidos */
+/**listar por estado */
+exports.listarPedidoPorEstado = function(req,res){
+    let estado=req.params.estado;
+    if(mc){
+        mc.query("SELECT * FROM pedido WHERE estado = ?", estado, function(error,result){
+            if(error){ 
+                console.log(error);
+                throw error;
+            }
+            return res.status(200).json({
+                Mensaje: "Lista de pedidos por estado "+ estado+".",
+                result: results,
+            })
+        })
+    }
+}
