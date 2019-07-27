@@ -8,37 +8,34 @@ const mc = mysql.createConnection({
 });
 //conectar
 mc.connect();
-/* ---- Ipedido
-    nombre:string,
-    rut:string,
-    telefono:string,
-    direccion: string,
-    mail:string,
-    modo_entrega: string,
-    fecha_inicio: Date,
-    fecha_entrega: Date,
-    fecha_pago: Date,
-    valor_total: number,
-    metodo_pago: string,
-    estado: string
-
+/*
+id int(11) primary key auto_increment,
+                              modo_entrega text NOT NULL,
+                              fecha_inicio date not null,
+                              fecha_entrega date  NOT NULL,
+                              fecha_pago date NOT NULL,
+                              valor_total int(11)  NOT NULL,
+                              metodo_pago text not null,
+                              direccion varchar(200) NOT NULL,
+                              estado varchar(150) NOT NULL */ 
+/**listar todos los productos GET */
+exports.listarPedido= function(req,res){
+    mc.query('SELECT * FROM pedido', function(error,  results, fields ){
+        if(error) throw error;
+        return res.send({error: false, data: results, message:'Lista de pedidos.'})
+    })
 }
 
-/** Crear pedido */
-exports.crear = function(req,res){
-    let datosPedido = {
-        //id
-        nombre: req.body.nombre,
-        rut: req.body.rut,
-        telefono:parseInt(req.body.telefono),
-        direccion: req.body.direccion,
-        mail:req.body.mail,
+/*Crear pedido */
+exports.crearPedido=function(req,res){
+    let datosPedido = {  
         modo_entrega: req.body.modo_entrega,
         fecha_inicio: req.body.fecha_inicio,
         fecha_entrega: req.body.fecha_entrega,
         fecha_pago: req.body.fecha_pago,
-        valor_total: parseInt(req.body.valor_total),
+        valor_total: req.body.valor_total,
         metodo_pago: req.body.metodo_pago,
+        direccion: req.body.direccion,
         estado: req.body.estado
     };
 
@@ -46,20 +43,20 @@ exports.crear = function(req,res){
         mc.query("INSERT INTO pedido SET ?",datosPedido,function (error,result){
             
             if(error){
-                console.log(error);
                 res.status(500).json({
                     Mensaje:"Error",
                     error: error
-                })
+            })
             }
             else{
                 res.status(201).json({
-                    mensaje:"Pedido Agregado",
+                    mensaje:"Pedido Insertado",
                     datos: result
                 })
             }
         });
     }
+<<<<<<< HEAD
 };
 
 /**Ver pedido según el id */
@@ -144,3 +141,6 @@ exports.listarPedidoPorEstado = function(req,res){
         })
     }
 }
+=======
+};
+>>>>>>> listarPedidos listo
