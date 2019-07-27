@@ -41,37 +41,48 @@ mc.connect();
 
 
 //Escuchar peticiones
-app.listen(3004,()=>{
-    console.log('Express server - puerto 3004 online');
-    
-});
-
-//hola
-/**productos */
-var producto= require('./producto');
-var cliente= require('./cliente');
-var op= require('./opinion');
-var empleado = require('./empleado');
-
-app.post('/producto', producto.crear);
-app.put('/producto/:id', producto.actualizar);
-app.delete('/producto/:id', producto.borrar);
-app.get('/productos', producto.listar);
-app.get('/producto/',producto.buscarPorNombre);
-app.get('/producto/categoria/:cat',producto.listarCategoria);
-app.get('/producto/:id',producto.ver);
-
-app.get('/clientes', cliente.listarClientes);
-app.post('/cliente',cliente.crearCliente);
-app.put('/cliente/:id', cliente.actualizarCliente);
-app.delete('/cliente/:id', cliente.borrarCliente);
-
-app.get('/opinion', op.listarOpinion);
-app.post('/opinion', op.crear);
-
-app.post('/empleado', empleado.crearEmpleado);
-
-
+app.listen(3005, () => {
+    console.log('Express server - puerto 3005 online');
+  });
+  
+  //hola
+  /**productos */
+  var producto= require('./producto');
+  var cliente= require('./cliente');
+  var op= require('./opinion');
+  var empleado = require('./empleado');
+  var detalle_pedido= require('./detalle_pedido')
+  var pedido = require('./pedido');
+  
+  
+  app.post('/producto', producto.crear);
+  app.put('/producto/:id', producto.actualizar);
+  app.delete('/producto/:id', producto.borrar);
+  app.get('/productos', producto.listar);
+  app.get('/producto/', producto.buscarPorNombre);
+  app.get('/producto/categoria/:cat', producto.listarCategoria);
+  app.get('/producto/:id', producto.ver);
+  
+  app.get('/clientes', cliente.listarClientes);
+  app.post('/cliente', cliente.crearCliente);
+  app.put('/cliente/:id', cliente.actualizarCliente);
+  app.delete('/cliente/:id', cliente.borrarCliente);
+  
+  app.get('/opinion', op.listarOpinion);
+  app.post('/opinion', op.crear);
+  
+  app.post('/empleado', empleado.crearEmpleado);
+  
+  app.post('/pedido',pedido.crearPedido);
+  app.get('/pedido/:id',pedido.ver);
+  app.put('/pedido',pedido.actualizar);
+  app.get('/pedidos', pedido.listarPedido);
+  app.get('/pedidos/:estado', pedido.listarPedidoPorEstado);
+  
+  
+  app.post('/detallepedido',detalle_pedido.crear);
+  
+ 
 app.get('/Userlogin',(req, res)=>{
     var body = req.body;
     console.log(req.body.email);
