@@ -19,6 +19,13 @@ id int(11) primary key auto_increment,
                               direccion varchar(200) NOT NULL,
                               estado varchar(150) NOT NULL */ 
 /**listar todos los productos GET */
+exports.detallePedido= function(req,res){
+    mc.query('select p.id,p.nombre,p.precio,p.descripcion,p.categoria,p.imagen,p.cantidad_personas, p.tiempo_produccion from producto as p,pedido,detalle_pedido where p.id=detalle_pedido.id_producto and detalle_pedido.id_pedido=pedido.id and pedido.id= ?', function(error,  results, fields ){
+        if(error) throw error;
+        return res.send({error: false, data: results, message:'Lista de pedidos.'})
+    })
+}
+
 exports.listarPedido= function(req,res){
     mc.query('SELECT * FROM pedido', function(error,  results, fields ){
         if(error) throw error;
