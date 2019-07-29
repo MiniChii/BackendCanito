@@ -29,13 +29,17 @@ exports.listarPedido= function(req,res){
 /*Crear pedido */
 exports.crearPedido=function(req,res){
     let datosPedido = {  
+        nombre: req.body.nombre,
+        rut: req.body.rut,
+        telefono:parseInt(req.body.telefono),
+        direccion: req.body.direccion,
+        mail:req.body.mail,
         modo_entrega: req.body.modo_entrega,
         fecha_inicio: req.body.fecha_inicio,
         fecha_entrega: req.body.fecha_entrega,
         fecha_pago: req.body.fecha_pago,
-        valor_total: req.body.valor_total,
+        valor_total: parseInt(req.body.valor_total),
         metodo_pago: req.body.metodo_pago,
-        direccion: req.body.direccion,
         estado: req.body.estado
     };
 
@@ -56,7 +60,6 @@ exports.crearPedido=function(req,res){
             }
         });
     }
-<<<<<<< HEAD
 };
 
 /**Ver pedido según el id */
@@ -141,6 +144,3 @@ exports.listarPedidoPorEstado = function(req,res){
         })
     }
 }
-=======
-};
->>>>>>> listarPedidos listo

@@ -74,7 +74,7 @@ app.post('/empleado', empleado.crearEmpleado);
 
 app.post('/pedido',pedido.crearPedido);
 app.get('/pedido/:id',pedido.ver);
-app.put('/pedido',pedido.actualizar);
+app.put('/pedido/:id',pedido.actualizar);
 app.get('/pedidos', pedido.listarPedido);
 app.get('/pedidos/:estado', pedido.listarPedidoPorEstado);
 
